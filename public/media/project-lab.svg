@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Sensor Sled Beta</title>
+  <desc id="desc">Current work panel featuring an orange prototype sled and utility strips.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff2dc" />
+      <stop offset="52%" stop-color="#f1d8b2" />
+      <stop offset="100%" stop-color="#cfd8dd" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="34" fill="url(#bg)" />
+  <rect x="28" y="26" width="584" height="368" rx="24" fill="rgba(255,255,255,0.52)" stroke="rgba(88,82,74,0.3)" />
+  <rect x="54" y="70" width="532" height="22" rx="11" fill="#ef8627" opacity=".9" />
+  <rect x="54" y="120" width="532" height="212" rx="22" fill="#f6f1e7" stroke="#99a4ab" stroke-width="4" />
+  <path d="M126 248h252l38-58-54-40H170z" fill="#ef8627" stroke="#a35614" stroke-width="5" />
+  <rect x="426" y="158" width="118" height="40" rx="12" fill="#d7dfe4" />
+  <rect x="426" y="216" width="96" height="30" rx="10" fill="#ef8627" />
+  <rect x="426" y="264" width="110" height="24" rx="10" fill="#d7dfe4" />
+  <text x="56" y="58" font-family="Arial, sans-serif" font-size="18" letter-spacing="4" fill="#6f644f">CURRENT MODULE</text>
+  <text x="54" y="362" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#2a2c2f">SENSOR SLED BETA</text>
+  <text x="54" y="388" font-family="Arial, sans-serif" font-size="17" fill="#5d5f62">Mobile sensor mount for rapid payload changes and repeat testing.</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc">
+  <title id="title">Desk organizer shell thumbnail</title>
+  <desc id="desc">Catalog-style product thumbnail for the GLTF organizer shell.</desc>
+  <rect width="360" height="260" rx="26" fill="#dae3e7" />
+  <rect x="18" y="18" width="324" height="224" rx="18" fill="#f7f3ea" stroke="#97a1a8" />
+  <rect x="88" y="74" width="180" height="108" rx="24" fill="#ef8627" stroke="#a95b16" stroke-width="5" />
+  <rect x="110" y="94" width="48" height="68" rx="12" fill="#f8f2e7" />
+  <rect x="176" y="94" width="70" height="26" rx="10" fill="#f8f2e7" />
+  <rect x="176" y="136" width="52" height="26" rx="10" fill="#f8f2e7" />
+  <text x="24" y="34" font-family="Arial, sans-serif" font-size="14" letter-spacing="3" fill="#4f5960">PROTOTYPE 03</text>
+  <text x="24" y="228" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#22201d">DESK ORGANIZER SHELL</text>
+</svg>

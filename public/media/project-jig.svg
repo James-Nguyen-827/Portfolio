@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Precision Jig Platform</title>
+  <desc id="desc">Blue gray technical frame with orange jigs and dense labeling.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef2f3" />
+      <stop offset="70%" stop-color="#cad5db" />
+      <stop offset="100%" stop-color="#aab8c1" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="34" fill="url(#bg)" />
+  <rect x="24" y="24" width="592" height="372" rx="26" fill="#f8f6f0" stroke="#828c94" stroke-width="2" />
+  <rect x="24" y="24" width="592" height="66" rx="26" fill="#ece7df" />
+  <rect x="48" y="120" width="256" height="224" rx="22" fill="#e0e7eb" stroke="#97a2aa" stroke-width="4" />
+  <rect x="334" y="120" width="234" height="92" rx="18" fill="#ef8627" />
+  <rect x="334" y="232" width="234" height="112" rx="18" fill="#dde4e8" />
+  <path d="M88 262h178l-22-92H116z" fill="#ef8627" stroke="#a55613" stroke-width="5" />
+  <circle cx="418" cy="164" r="32" fill="#fff5e7" />
+  <circle cx="496" cy="164" r="32" fill="#fff5e7" />
+  <text x="48" y="58" font-family="Arial, sans-serif" font-size="18" letter-spacing="4" fill="#5d6770">RESEARCH / FIXTURE STUDY</text>
+  <text x="48" y="374" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#29333b">PRECISION JIG PLATFORM</text>
+  <text x="48" y="398" font-family="Arial, sans-serif" font-size="17" fill="#5b646b">Repeatable small-part handling with fast swaps, calibration notes, and print-led iteration.</text>
+</svg>

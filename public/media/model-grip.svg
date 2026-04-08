@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-labelledby="title desc">
+  <title id="title">Ergonomic grip thumbnail</title>
+  <desc id="desc">Soft orange model thumbnail showing a tapered handheld prototype.</desc>
+  <rect width="360" height="260" rx="26" fill="#efe8da" />
+  <rect x="18" y="18" width="324" height="224" rx="18" fill="#d2dce1" />
+  <path d="M88 170c20-64 56-90 116-96 26-2 46 8 58 30 12 22 10 44-4 68-14 24-38 40-74 48-48 10-82 0-96-30z" fill="#ef8627" stroke="#a85c17" stroke-width="4" />
+  <text x="24" y="34" font-family="Arial, sans-serif" font-size="14" letter-spacing="3" fill="#4f5960">PROTOTYPE 01</text>
+  <text x="24" y="228" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#22201d">ERGONOMIC GRIP</text>
+</svg>
