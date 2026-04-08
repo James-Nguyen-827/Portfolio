@@ -162,15 +162,22 @@ function SectionFrame({
   );
 }
 
-function ProjectCard({ project, compact = false }) {
+function ProjectCard({ project, compact = false, variant = 'featured' }) {
+  const isCurrent = variant === 'current';
+
   return (
     <article
       id={project.id ? `project-${project.id}` : undefined}
-      className={`project-card tilt-card ${compact ? 'project-card--compact' : 'project-card--featured'}`}
+      className={`project-card tilt-card ${compact ? 'project-card--compact' : 'project-card--featured'} ${
+        isCurrent ? 'project-card--current' : 'project-card--featured-lane'
+      }`}
       {...tiltCardProps}
     >
       <div className="project-card__meta">
-        <span className="micro-label">{project.category}</span>
+        <div className="project-card__meta-copy">
+          <span className="micro-label">{project.category}</span>
+          {isCurrent ? <span className="project-card__mode">In progress</span> : null}
+        </div>
         <span className="status-pill">{project.status}</span>
       </div>
       <div className="project-card__media">
@@ -185,6 +192,13 @@ function ProjectCard({ project, compact = false }) {
           </span>
         ))}
       </div>
+      {isCurrent ? (
+        <div className="project-card__activity" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+      ) : null}
       <footer className="project-card__footer">
         <span>{project.process.join(' / ')}</span>
         {project.link ? (
@@ -238,6 +252,7 @@ function App() {
   const supportProjects = projects.filter((project) => !project.featured);
   const selectedModel = models.find((model) => model.id === selectedModelId) ?? models[0] ?? null;
   const readyClass = appReady ? 'is-ready' : '';
+  const currentWorkLabel = `${supportProjects.length} active`;
 
   const registerReveal = (id) => (element) => {
     if (!id) {
@@ -758,7 +773,7 @@ function App() {
           id="projects"
           title="Projects"
           meta="Selected work"
-          caption="Three featured fabrication-led projects with smaller current modules alongside them."
+          caption="Featured fabrication-led projects on the left, with a separate current-work rail for active in-progress modules on the right."
           className="section-frame--projects"
           revealId="projects-frame"
           revealDelay="0s"
@@ -767,6 +782,20 @@ function App() {
         >
           <div className="projects-layout">
             <div className="projects-layout__featured">
+              <header
+                ref={registerReveal('projects-featured-header')}
+                data-reveal-id="projects-featured-header"
+                className={`lane-header lane-header--featured reveal-on-scroll ${
+                  isBlockRevealed('projects-featured-header') ? 'is-revealed' : ''
+                }`}
+                style={{ '--reveal-delay': '0.02s' }}
+              >
+                <div>
+                  <p className="micro-label">Featured projects</p>
+                  <h3>Primary showcase</h3>
+                </div>
+                <span className="lane-header__count">{featuredProjects.length} modules</span>
+              </header>
               {featuredProjects.map((project, index) => (
                 <div
                   key={project.title}
@@ -782,15 +811,23 @@ function App() {
               ))}
             </div>
 
-            <aside className="projects-layout__support">
-              <div
-                ref={registerReveal('projects-summary')}
-                data-reveal-id="projects-summary"
-                className={`support-panel support-panel--summary reveal-on-scroll ${
-                  isBlockRevealed('projects-summary') ? 'is-revealed' : ''
-                }`}
-                style={{ '--reveal-delay': '0.08s' }}
-              >
+            <aside
+              ref={registerReveal('projects-current-rail')}
+              data-reveal-id="projects-current-rail"
+              className={`projects-layout__support current-rail reveal-on-scroll ${
+                isBlockRevealed('projects-current-rail') ? 'is-revealed' : ''
+              }`}
+              style={{ '--reveal-delay': '0.08s' }}
+            >
+              <header className="lane-header lane-header--current">
+                <div>
+                  <p className="micro-label">Current work</p>
+                  <h3>Active build rail</h3>
+                </div>
+                <span className="lane-header__count">{currentWorkLabel}</span>
+              </header>
+
+              <div className="current-rail__summary">
                 <p className="micro-label">Current emphasis</p>
                 <h3>Physical product / 3D / fabrication work</h3>
                 <p>
@@ -799,19 +836,23 @@ function App() {
                 </p>
               </div>
 
-              {supportProjects.map((project, index) => (
-                <div
-                  key={project.title}
-                  ref={registerReveal(`support-project-${index + 1}`)}
-                  data-reveal-id={`support-project-${index + 1}`}
-                  className={`support-project-slot reveal-on-scroll ${
-                    isBlockRevealed(`support-project-${index + 1}`) ? 'is-revealed' : ''
-                  }`}
-                  style={{ '--reveal-delay': `${0.12 + index * 0.06}s` }}
-                >
-                  <ProjectCard project={project} compact />
-                </div>
-              ))}
+              <div className="current-rail__divider" aria-hidden="true" />
+
+              <div className="current-rail__list">
+                {supportProjects.map((project, index) => (
+                  <div
+                    key={project.title}
+                    ref={registerReveal(`support-project-${index + 1}`)}
+                    data-reveal-id={`support-project-${index + 1}`}
+                    className={`support-project-slot reveal-on-scroll ${
+                      isBlockRevealed(`support-project-${index + 1}`) ? 'is-revealed' : ''
+                    }`}
+                    style={{ '--reveal-delay': `${0.14 + index * 0.06}s` }}
+                  >
+                    <ProjectCard project={project} compact variant="current" />
+                  </div>
+                ))}
+              </div>
             </aside>
           </div>
         </SectionFrame>
