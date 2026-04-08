@@ -227,9 +227,40 @@ function ContactLink({ contact }) {
   );
 }
 
+function DorficBackdrop() {
+  return (
+    <div className="dorfic-backdrop" aria-hidden="true">
+      <div className="dorfic-backdrop__base" />
+      <div className="dorfic-backdrop__ribbons">
+        <span className="dorfic-backdrop__ribbon dorfic-backdrop__ribbon--1" />
+        <span className="dorfic-backdrop__ribbon dorfic-backdrop__ribbon--2" />
+        <span className="dorfic-backdrop__ribbon dorfic-backdrop__ribbon--3" />
+        <span className="dorfic-backdrop__ribbon dorfic-backdrop__ribbon--4" />
+      </div>
+      <div className="dorfic-backdrop__orbs">
+        <span className="dorfic-backdrop__orb dorfic-backdrop__orb--1" />
+        <span className="dorfic-backdrop__orb dorfic-backdrop__orb--2" />
+        <span className="dorfic-backdrop__orb dorfic-backdrop__orb--3" />
+        <span className="dorfic-backdrop__orb dorfic-backdrop__orb--4" />
+      </div>
+      <div className="dorfic-backdrop__rings">
+        <span className="dorfic-backdrop__ring dorfic-backdrop__ring--1" />
+        <span className="dorfic-backdrop__ring dorfic-backdrop__ring--2" />
+        <span className="dorfic-backdrop__ring dorfic-backdrop__ring--3" />
+      </div>
+      <div className="dorfic-backdrop__atmosphere">
+        <span className="dorfic-backdrop__bloom dorfic-backdrop__bloom--1" />
+        <span className="dorfic-backdrop__bloom dorfic-backdrop__bloom--2" />
+        <span className="dorfic-backdrop__grain" />
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [appReady, setAppReady] = useState(false);
   const [activeSection, setActiveSection] = useState(navigation[0].id);
+  const [headerCondensed, setHeaderCondensed] = useState(false);
   const [revealedBlocks, setRevealedBlocks] = useState({});
   const [selectedModelId, setSelectedModelId] = useState(models[0]?.id ?? null);
   const [viewerEnabled, setViewerEnabled] = useState(false);
@@ -563,6 +594,153 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return undefined;
+    }
+
+    const root = document.documentElement;
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let frame = 0;
+    let currentScrollY = 0;
+    let targetScrollY = 0;
+
+    const resetBackdropMotionVars = () => {
+      root.style.setProperty('--dorfic-scroll-progress', '0');
+      root.style.setProperty('--dorfic-scroll-ribbons-x', '0px');
+      root.style.setProperty('--dorfic-scroll-ribbons-y', '0px');
+      root.style.setProperty('--dorfic-scroll-rings-x', '0px');
+      root.style.setProperty('--dorfic-scroll-rings-y', '0px');
+      root.style.setProperty('--dorfic-scroll-orbs-y', '0px');
+      root.style.setProperty('--dorfic-scroll-atmosphere-y', '0px');
+      root.style.setProperty('--dorfic-scroll-sweep-rotate', '0deg');
+    };
+
+    const setBackdropMotionVars = (scrollY) => {
+      const scrollableHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      const progress = clamp(scrollY / scrollableHeight, 0, 1);
+      const sweepBias = (progress - 0.5) * 2;
+
+      root.style.setProperty('--dorfic-scroll-progress', progress.toFixed(4));
+      root.style.setProperty('--dorfic-scroll-ribbons-x', `${(sweepBias * 20).toFixed(2)}px`);
+      root.style.setProperty('--dorfic-scroll-ribbons-y', `${(-scrollY * 0.035).toFixed(2)}px`);
+      root.style.setProperty('--dorfic-scroll-rings-x', `${(-sweepBias * 14).toFixed(2)}px`);
+      root.style.setProperty('--dorfic-scroll-rings-y', `${(scrollY * 0.014).toFixed(2)}px`);
+      root.style.setProperty('--dorfic-scroll-orbs-y', `${(scrollY * 0.022).toFixed(2)}px`);
+      root.style.setProperty('--dorfic-scroll-atmosphere-y', `${(-scrollY * 0.026).toFixed(2)}px`);
+      root.style.setProperty('--dorfic-scroll-sweep-rotate', `${(sweepBias * 2.2).toFixed(2)}deg`);
+    };
+
+    const stepBackdropMotion = () => {
+      frame = 0;
+      currentScrollY += (targetScrollY - currentScrollY) * 0.14;
+
+      if (Math.abs(targetScrollY - currentScrollY) < 0.3) {
+        currentScrollY = targetScrollY;
+      }
+
+      setBackdropMotionVars(currentScrollY);
+
+      if (Math.abs(targetScrollY - currentScrollY) >= 0.3) {
+        frame = requestAnimationFrame(stepBackdropMotion);
+      }
+    };
+
+    const requestBackdropMotionUpdate = () => {
+      if (reducedMotionQuery.matches) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        currentScrollY = 0;
+        targetScrollY = 0;
+        resetBackdropMotionVars();
+        return;
+      }
+
+      targetScrollY = window.scrollY || window.pageYOffset || 0;
+
+      if (!frame) {
+        frame = requestAnimationFrame(stepBackdropMotion);
+      }
+    };
+
+    const syncBackdropMotionPreference = () => {
+      if (reducedMotionQuery.matches) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        currentScrollY = 0;
+        targetScrollY = 0;
+        resetBackdropMotionVars();
+        return;
+      }
+
+      currentScrollY = window.scrollY || window.pageYOffset || 0;
+      targetScrollY = currentScrollY;
+      setBackdropMotionVars(currentScrollY);
+    };
+
+    const addChangeListener = (query, listener) => {
+      if (query.addEventListener) {
+        query.addEventListener('change', listener);
+        return;
+      }
+
+      query.addListener(listener);
+    };
+
+    const removeChangeListener = (query, listener) => {
+      if (query.removeEventListener) {
+        query.removeEventListener('change', listener);
+        return;
+      }
+
+      query.removeListener(listener);
+    };
+
+    syncBackdropMotionPreference();
+    window.addEventListener('scroll', requestBackdropMotionUpdate, { passive: true });
+    window.addEventListener('resize', requestBackdropMotionUpdate);
+    addChangeListener(reducedMotionQuery, syncBackdropMotionPreference);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      resetBackdropMotionVars();
+      window.removeEventListener('scroll', requestBackdropMotionUpdate);
+      window.removeEventListener('resize', requestBackdropMotionUpdate);
+      removeChangeListener(reducedMotionQuery, syncBackdropMotionPreference);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    let frame = 0;
+
+    const updateHeaderCondensed = () => {
+      frame = 0;
+      const nextValue = (window.scrollY || window.pageYOffset || 0) > 24;
+
+      setHeaderCondensed((previous) => (previous === nextValue ? previous : nextValue));
+    };
+
+    const requestUpdate = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(updateHeaderCondensed);
+      }
+    };
+
+    requestUpdate();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
     let frame = 0;
 
     const getSections = () =>
@@ -658,44 +836,57 @@ function App() {
   };
 
   return (
-    <div className="app-shell">
-      <header className="site-header">
-        <div
-          className={`site-header__utility reveal-seq ${readyClass}`}
-          style={{ '--reveal-delay': '0.08s' }}
-        >
-          <span className="micro-label">Portfolio module</span>
-          <div className="utility-copy">
-            <span>{siteMeta.location}</span>
-            <span>{siteMeta.availability}</span>
-          </div>
-        </div>
-      </header>
-
-      <div className="site-layout">
-        <aside className="site-sidebar">
+    <div className="app-root">
+      <DorficBackdrop />
+      <div className="app-shell">
+        <header className="site-header">
           <div
-            className={`site-sidebar__panel reveal-seq ${readyClass}`}
-            style={{ '--reveal-delay': '0.2s' }}
+            className={`site-header__utility reveal-seq ${readyClass} ${headerCondensed ? 'is-condensed' : ''}`}
+            style={{ '--reveal-delay': '0.08s' }}
           >
-            <p className="micro-label">Section index</p>
-            <nav className="section-nav section-nav--sidebar" aria-label="Primary">
-              {navigation.map((item) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={`section-nav__link section-nav__link--sidebar ${activeSection === item.id ? 'is-active' : ''}`}
-                  aria-current={activeSection === item.id ? 'page' : undefined}
-                >
-                  <span className="section-nav__text">{item.label}</span>
-                  <span className="section-nav__meter" aria-hidden="true" />
-                </a>
-              ))}
-            </nav>
+            <div className="site-header__brand">
+              <p className="micro-label site-header__eyebrow">Portfolio module</p>
+              <div className="site-header__identity">
+                <h1 className="site-header__name">{siteMeta.title}</h1>
+                <p className="site-header__role">{siteMeta.role}</p>
+              </div>
+            </div>
+            <div className="site-header__actions">
+              <p className="site-header__support" aria-label={`${siteMeta.location}. ${siteMeta.availability}`}>
+                <span>{siteMeta.location}</span>
+                <span>{siteMeta.availability}</span>
+              </p>
+              <a href="#contact" className="bevel-button site-header__cta">
+                Contact
+              </a>
+            </div>
           </div>
-        </aside>
+        </header>
 
-        <main className="site-main">
+        <div className="site-layout">
+          <aside className="site-sidebar">
+            <div
+              className={`site-sidebar__panel reveal-seq ${readyClass}`}
+              style={{ '--reveal-delay': '0.2s' }}
+            >
+              <p className="micro-label">Section index</p>
+              <nav className="section-nav section-nav--sidebar" aria-label="Primary">
+                {navigation.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className={`section-nav__link section-nav__link--sidebar ${activeSection === item.id ? 'is-active' : ''}`}
+                    aria-current={activeSection === item.id ? 'page' : undefined}
+                  >
+                    <span className="section-nav__text">{item.label}</span>
+                    <span className="section-nav__meter" aria-hidden="true" />
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          <main className="site-main">
           <section id="intro" className="hero-panel">
           <div
             className={`hero-panel__intro reveal-seq ${readyClass}`}
@@ -1123,7 +1314,8 @@ function App() {
             </div>
           </div>
         </SectionFrame>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
   );
