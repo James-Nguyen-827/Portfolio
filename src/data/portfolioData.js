@@ -13,6 +13,7 @@ export const navigation = [
   { id: 'projects', label: 'Projects' },
   { id: 'models', label: '3D Models' },
   { id: 'prints', label: '3D Prints' },
+  { id: 'about', label: 'About' },
   { id: 'resume', label: 'Resume' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -211,9 +212,21 @@ export const prints = [
   },
 ];
 
+export const aboutMe = {
+  paragraphs: [
+    'My work lives between research, fabrication, and interface thinking. I am most engaged by projects that begin with a practical need and become clearer through structured experimentation.',
+    'I like building systems that can be handled, tested, and revised quickly. That might mean a physical prototype, a workflow tool, or an interface that makes a messy process easier to understand and use.',
+    'The through line for me is iteration. I care about making things that feel legible, useful, and durable enough to keep improving once they are in front of real people.',
+  ],
+  highlights: [
+    { label: 'Focus', value: 'Research, fabrication, and interface systems' },
+    { label: 'Approach', value: 'Practical, iterative, and test-driven' },
+    { label: 'Preferred work', value: 'Projects that move from concept to usable proof quickly' },
+    { label: 'Outcome', value: 'Tools and objects that feel clear, useful, and easy to revisit' },
+  ],
+};
+
 export const resume = {
-  bio:
-    'My work lives between research, fabrication, and interface thinking. I like projects that start with a practical need, pass through structured experimentation, and end as something tangible, legible, and easy to use.',
   experience: [
     {
       period: 'Current',

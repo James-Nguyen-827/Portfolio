@@ -1630,7 +1630,6 @@ img {
 .support-panel p,
 .viewer-panel__caption p,
 .resume-entry p,
-.resume-panel--bio p,
 .contact-card strong,
 .catalog-card p {
   margin: 0;
@@ -1975,9 +1974,60 @@ img {
   object-fit: cover;
 }
 
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(280px, 0.92fr);
+  gap: 16px;
+}
+
+.support-panel--about {
+  background:
+    linear-gradient(180deg, rgba(206, 216, 223, 0.42), rgba(233, 239, 236, 0.24)),
+    linear-gradient(118deg, rgba(255, 195, 118, 0.12), transparent 60%);
+}
+
+.about-copy {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.about-copy p,
+.about-highlight p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.resume-panel--about {
+  padding: 18px;
+}
+
+.about-highlights {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.about-highlight {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(209, 217, 222, 0.32);
+}
+
+.about-highlight span {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(68, 63, 57, 0.66);
+}
+
 .resume-layout {
   display: grid;
-  grid-template-columns: 1.1fr 1.2fr;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -1985,15 +2035,8 @@ img {
   padding: 18px;
 }
 
-.resume-panel--bio {
-  background:
-    linear-gradient(180deg, rgba(242, 167, 84, 0.94), rgba(228, 121, 28, 0.94));
-  color: var(--white);
-}
-
-.resume-panel--bio .micro-label,
-.resume-panel--bio p {
-  color: rgba(255, 250, 244, 0.9);
+.resume-panel--experience {
+  grid-column: 1 / -1;
 }
 
 .resume-stack {
@@ -2354,6 +2397,7 @@ img {
 
   .projects-layout,
   .models-layout,
+  .about-layout,
   .contact-layout,
   .resume-layout {
     grid-template-columns: 1fr;

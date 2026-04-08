@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import {
+  aboutMe,
   contacts,
   hero,
   models,
@@ -1189,10 +1190,60 @@ function App() {
         </SectionFrame>
 
         <SectionFrame
+          id="about"
+          title="About"
+          meta="Personal profile"
+          caption="A narrative look at how I approach making, testing, and turning ideas into working systems."
+          className="section-frame--about"
+          revealId="about-frame"
+          revealDelay="0s"
+          isRevealed={isBlockRevealed('about-frame')}
+          registerReveal={registerReveal}
+        >
+          <div className="about-layout">
+            <article
+              ref={registerReveal('about-story')}
+              data-reveal-id="about-story"
+              className={`support-panel support-panel--about reveal-on-scroll ${
+                isBlockRevealed('about-story') ? 'is-revealed' : ''
+              }`}
+              style={{ '--reveal-delay': '0.04s' }}
+            >
+              <p className="micro-label">Narrative</p>
+              <h3>Building work that gets sharper once it can be used, tested, and revised.</h3>
+              <div className="about-copy">
+                {aboutMe.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </article>
+
+            <article
+              ref={registerReveal('about-highlights')}
+              data-reveal-id="about-highlights"
+              className={`resume-panel resume-panel--about reveal-on-scroll ${
+                isBlockRevealed('about-highlights') ? 'is-revealed' : ''
+              }`}
+              style={{ '--reveal-delay': '0.1s' }}
+            >
+              <p className="micro-label">At a glance</p>
+              <div className="about-highlights">
+                {aboutMe.highlights.map((item) => (
+                  <div key={item.label} className="about-highlight">
+                    <span>{item.label}</span>
+                    <p>{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+        </SectionFrame>
+
+        <SectionFrame
           id="resume"
           title="Resume"
           meta="Technical dossier"
-          caption="Background, experience, skills, and education arranged as dense but readable information modules."
+          caption="Experience, skills, and education arranged as dense but readable information modules."
           revealId="resume-frame"
           revealDelay="0s"
           isRevealed={isBlockRevealed('resume-frame')}
@@ -1200,21 +1251,11 @@ function App() {
         >
           <div className="resume-layout">
             <article
-              ref={registerReveal('resume-bio')}
-              data-reveal-id="resume-bio"
-              className={`resume-panel resume-panel--bio reveal-on-scroll ${
-                isBlockRevealed('resume-bio') ? 'is-revealed' : ''
-              }`}
-              style={{ '--reveal-delay': '0.04s' }}
-            >
-              <p className="micro-label">About</p>
-              <p>{resume.bio}</p>
-            </article>
-
-            <article
               ref={registerReveal('resume-experience')}
               data-reveal-id="resume-experience"
-              className={`resume-panel reveal-on-scroll ${isBlockRevealed('resume-experience') ? 'is-revealed' : ''}`}
+              className={`resume-panel resume-panel--experience reveal-on-scroll ${
+                isBlockRevealed('resume-experience') ? 'is-revealed' : ''
+              }`}
               style={{ '--reveal-delay': '0.08s' }}
             >
               <p className="micro-label">Experience</p>
