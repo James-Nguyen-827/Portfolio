@@ -370,6 +370,7 @@ img {
   margin: 0 auto;
   display: grid;
   gap: 24px;
+  transition: opacity 220ms ease;
 }
 
 .app-shell::before {

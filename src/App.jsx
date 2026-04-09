@@ -477,6 +477,11 @@ function App() {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      setAppReady(true);
+      return undefined;
+    }
+
     const frame = requestAnimationFrame(() => {
       setAppReady(true);
     });
